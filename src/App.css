@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.buttons {
+
+}
+
+button {
+  border: none;
+  background: #404040;
+  color: #ffffff;
+  font-weight: 100;
+  padding: 10px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  display: inline-block;
+  transition: all 0.3s ease 0s;
+  margin: 10px;
+  font-weight: 500;
+  }
+
+button:hover {
+  color: #404040;
+  background: #dddddd;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  -webkit-box-shadow: 0px 5px 5px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 5px -10px rgba(0,0,0,0.57);
+  transition: all 0.3s ease 0s;
+}
