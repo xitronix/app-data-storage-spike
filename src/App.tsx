@@ -24,21 +24,6 @@ const fetchSaveToDrive = (fileContent: string, accessToken: string, name = 'UniF
   });
 }
 
-function listFiles() {
-  return (getDrive()).files.list({
-    parents: [],
-    'pageSize': 10,
-    'fields': "nextPageToken, files(id, name)"
-  }).then(function (response: any) {
-    const files = response.result.files;
-    const result = []
-    for (let file of files) {
-      result.push(file.name + ' (' + file.id + ')');
-    }
-    return result.length ? result : 'No files found.';
-  });
-}
-
 async function listAppDataFolder() {
   try {
     const { result } = await getDrive().files.list({
@@ -102,63 +87,22 @@ function App() {
   const [value, setValue] = useState('');
   const [privateKey, setPrivateKey] = useState('0x123...789');
 
-  async function createFolder(name = 'UniFolder') {
-    try {
-      const { result } = await getDrive().files.create({
-        resource: {
-          name,
-          'mimeType': 'application/vnd.google-apps.folder'
-        },
-        fields: 'id'
-      }).getPromise();
-      console.log('Folder id: ', result.id);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function createFile(fileContent: string, name = 'UniFile') {
-    try {
-      const fileMetadata = {
-        name,
-        parents: [fileContent]
-      };
-      const media = {
-        mimeType: 'text/plain',
-        body: fileContent
-      };
-      const { result } = await getDrive().files.create({
-        resource: fileMetadata,
-        media: media,
-        fields: 'id'
-      }).getPromise();
-      console.log('File: ', result.id, result.name);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   const onSignInSuccess = (name: string, accessToken: string) => {
     setUser(name);
     setAccessToken(accessToken);
     setIsSignedIn(getGapi().auth2.getAuthInstance().isSignedIn.get());
   }
 
-  const [] = useGoogle();
+  useGoogle();
 
   return (
     <div className="App">
       {!isSignedIn ? <SignIn onSuccess={onSignInSuccess} /> : <>
           <h1>Hello, {user}</h1>
           <div className="buttons" >
-            <button onClick={async () => console.log(await listFiles())}>List files</button>
             <h2> Create </h2>
-            <label>Instance name: </label><input value={instanceName} onChange={event => setInstanceName(event.target.value)} /> <br />
-            <label>Value: </label><input value={value} onChange={event => setValue(event.target.value)} />
-            <br />
-            <button onClick={() => fetchSaveToDrive(value, accessToken!, instanceName)}>Save string on your drive</button>
-            <button onClick={() => createFolder(instanceName)}>Create Folder</button>
-            <button onClick={() => createFile(value, instanceName)}>Create File</button>
+              <label>Value: </label><input value={value} onChange={event => setValue(event.target.value)} />
+              <button onClick={() => fetchSaveToDrive(value, accessToken!, instanceName)}>Save string on your drive</button>
             <div>
               <h2> Application-specific data</h2>
               <label>Id: </label><input value={id} onChange={event => setId(event.target.value)} /> <br />

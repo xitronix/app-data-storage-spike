@@ -34,13 +34,13 @@ export const SignIn = ({ onSuccess, onFailure }: ISignIn) => {
     );
   }
 
-  return <>
+  return <div className="sign-in-container">
     <h1>Sign with google</h1>
-    <button onClick={() => signIn()}>
-      <div className="sign-in-container">
+    <button id="sign-in-button" onClick={() => signIn()}>
+      <div className="sign-in-button-container">
         <img src={GoogleIcon} alt='' />
         <div className="sign-in-text">Login with Google</div>
       </div>
     </button>
-  </>
+  </div>
 };

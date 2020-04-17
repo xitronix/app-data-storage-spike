@@ -10,7 +10,7 @@ export function getGapi() {
 const GOOGLE_CLIENT_ID = '935123975864-lof3d1u5e77lo5rr07412vtu8i3m4a3a.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyB72cfCUB9Thdxnba0_JZLpytyweN2alUg';
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
-const SCOPES = 'https://www.googleapis.com/auth/drive.appdata'; //https://www.googleapis.com/auth/drive
+const SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
 
 
 export const useGoogle = () => {
