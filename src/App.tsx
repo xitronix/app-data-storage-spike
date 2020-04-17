@@ -37,7 +37,7 @@ function App() {
   const [instanceName, setInstanceName] = useState<string | undefined>(undefined);
   const [value, setValue] = useState('');
   const [privateKey, setPrivateKey] = useState('0x123...789');
-  const [storedFiles, setStoredFiles] = useState([]);
+  const [storedFiles, setStoredFiles] = useState<unknown[]>([]);
 
   const onSignInSuccess = (name: string, accessToken: string) => {
     setUser(name);
@@ -86,6 +86,7 @@ function App() {
         spaces: 'appDataFolder',
         fields: 'nextPageToken, files(id, name, appProperties)',
       });
+      console.log(result.files)
       setStoredFiles(result.files)
       result.files.forEach((file: any) => {
         console.log('Found file:', file, file.name, file.id);
@@ -103,9 +104,9 @@ function App() {
         <h1>Hello, {user} <SignOutButton onSuccess={() => setIsSignedIn(false)} /></h1>
         <div className="buttons" >
           <div className="context-container">
-            <h2> Create </h2>
+            <h2> Create File</h2>
             <label>Value: </label><input value={value} onChange={event => setValue(event.target.value)} />
-            <button onClick={() => fetchSaveToDrive(value, accessToken!, instanceName)}>Save string on your drive</button>
+            <button disabled onClick={() => fetchSaveToDrive(value, accessToken!, instanceName)}>Save string on your drive</button>
           </div>
           <div className="context-container">
             <h2> Application-specific data</h2>
@@ -118,7 +119,7 @@ function App() {
             <button onClick={() => fileOperation('get', id)}>Get file by id</button>
             <div>
               <h3> Stored application-specific data<button onClick={listAppDataFolder}>Show</button></h3>
-              {storedFiles.map(file => JSON.stringify(file))}
+              {storedFiles.length > 0 ? storedFiles.map(file => JSON.stringify(file)) : 'Files not found'}
             </div>
           </div>
         </div>
