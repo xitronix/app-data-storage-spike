@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { useGoogle, getGapi } from './useGoogle';
-import { SignIn } from './components/SignIn/SignIn';
+import { SignInWithGoogle, SignOutButton } from './components/Sign/SignIn';
 
 const fetchSaveToDrive = (fileContent: string, accessToken: string, name = 'UniFetchFile') => {
   const file = new Blob([fileContent], { type: 'text/plain' });
@@ -97,8 +97,8 @@ function App() {
 
   return (
     <div className="App">
-      {!isSignedIn ? <SignIn onSuccess={onSignInSuccess} /> : <>
-          <h1>Hello, {user}</h1>
+      {!isSignedIn ? <SignInWithGoogle onSuccess={onSignInSuccess} /> : <>
+          <h1>Hello, {user} <SignOutButton onSuccess={() => setIsSignedIn(false)}/></h1>
           <div className="buttons" >
             <h2> Create </h2>
               <label>Value: </label><input value={value} onChange={event => setValue(event.target.value)} />
@@ -114,10 +114,6 @@ function App() {
               <button onClick={() => fileOperation('delete', id)}>Delete file by id</button>
               <button onClick={() => fileOperation('get', id)}>Get file by id</button>
             </div>
-            <button onClick={async () => {
-              const auth2 = getGapi().auth2.getAuthInstance();
-              await auth2.signOut().then(auth2.disconnect().then(() => setIsSignedIn(false)));
-            }}>Sing out</button>
           </div>
         </>}
     </div>
