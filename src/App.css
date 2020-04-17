@@ -1,5 +1,11 @@
-.App{
-  padding: 0 200px;
+.App {
+  padding: 0 80px;
+}
+
+.context-container {
+  border: 1px solid #aaaaaa;
+  padding: 15px;
+  margin: 10px
 }
 
 button {
