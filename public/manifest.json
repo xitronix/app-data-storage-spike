@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Store data",
+  "name": "Store application-specific data spike",
   "icons": [
     {
       "src": "favicon.ico",
