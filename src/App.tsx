@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { useGoogle, getGapi } from './useGoogle';
 import { SignInWithGoogle, SignOutButton } from './components/Sign/SignIn';
+import { CredentialManagementApi } from './components/CredentialManagementApi/CredentialManagementApi';
 
 const fetchSaveToDrive = (fileContent: string, accessToken: string, name = 'UniFetchFile') => {
   const file = new Blob([fileContent], { type: 'text/plain' });
@@ -38,6 +39,7 @@ function App() {
   const [value, setValue] = useState('');
   const [privateKey, setPrivateKey] = useState('0x123...789');
   const [storedFiles, setStoredFiles] = useState<unknown[]>([]);
+  const [chosenFile, setChosenFile] = useState<any>();
 
   const onSignInSuccess = (name: string, accessToken: string) => {
     setUser(name);
@@ -74,7 +76,7 @@ function App() {
         fileId,
         fields: 'id, appProperties, name'
       })
-      console.log('Result:', result)
+      return result;
     } catch (err) {
       console.error('Error', err.result || err)
     }
@@ -96,6 +98,15 @@ function App() {
     }
   }
 
+  async function getFile() {
+    try {
+      const result = await fileOperation('get', id)
+      console.log(result)
+      setChosenFile(result)
+    } catch {
+      setChosenFile(undefined)
+    }
+  }
   useGoogle();
 
   return (
@@ -116,12 +127,18 @@ function App() {
             <br />
             <button onClick={() => savePrivateKeyAsAppData(privateKey)}>Save private key</button>
             <button onClick={() => fileOperation('delete', id)}>Delete file by id</button>
-            <button onClick={() => fileOperation('get', id)}>Get file by id</button>
             <div>
-              <h3> Stored application-specific data<button onClick={listAppDataFolder}>Show</button></h3>
+              <h3> Chosen file: <button onClick={getFile}>Show chosen file</button></h3>
+              {chosenFile ? JSON.stringify(chosenFile) : 'Choose file'}
+            </div>
+            <div>
+              <h3> Stored application-specific data<button onClick={listAppDataFolder}>Update view</button></h3>
               {storedFiles.length > 0 ? storedFiles.map(file => JSON.stringify(file)) : 'Files not found'}
             </div>
           </div>
+        </div>
+        <div className="context-container">
+          <CredentialManagementApi />
         </div>
       </>}
     </div>

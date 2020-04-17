@@ -6,6 +6,10 @@ export function getGapi() {
   return gapi as any;
 }
 
+export function getAuth2() {
+  return getGapi().auth2.getAuthInstance();
+}
+
 
 const GOOGLE_CLIENT_ID = '935123975864-lof3d1u5e77lo5rr07412vtu8i3m4a3a.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyB72cfCUB9Thdxnba0_JZLpytyweN2alUg';
