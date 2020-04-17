@@ -1,0 +1,8 @@
+.sign-in-container {
+  display: flex;
+  align-items: center;
+}
+
+.sign-in-text {
+  margin-left: 10px;
+}

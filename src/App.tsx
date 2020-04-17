@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
-import { useGoogle } from './useGoogle';
+import { useGoogle, getGapi } from './useGoogle';
+import { SignIn } from './components/SignIn/SignIn';
 
 const fetchSaveToDrive = (fileContent: string, accessToken: string, name = 'UniFetchFile') => {
   const file = new Blob([fileContent], { type: 'text/plain' });
@@ -88,16 +89,12 @@ async function fileOperation(operation: 'delete' | 'get', fileId: string | undef
   }
 }
 
-function getGapi() {
-  return gapi as any;
-}
-
 function getDrive() {
   return getGapi().client.drive;
 }
 
 function App() {
-  const [accessToken, setAccessToken] = useState(undefined);
+  const [accessToken, setAccessToken] = useState('');
   const [user, setUser] = useState<string | undefined>(undefined);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [id, setId] = useState<string | undefined>(undefined);
@@ -141,48 +138,17 @@ function App() {
     }
   }
 
-  async function handleCredentials(profile: any) {
-    if (!(window as any).PasswordCredential) {
-      return alert('Your Browser does not support PasswordCredential')
-    }
-    const credential = await window.navigator.credentials.get({password: true} as any);
-    console.log({credential})
-    if (credential) {
-      return;      
-    }
-    const newCredential = new (window as any).PasswordCredential({
-      id: profile.getEmail(),
-      password: 'privateKey from PasswordManager'
-    })
-    await window.navigator.credentials.store(newCredential);
-  }
-
-  async function signIn() {
-    const googleUser = await getGapi().auth2.getAuthInstance().signIn();
-    setUser(googleUser.getBasicProfile().getName());
-    await handleCredentials(googleUser.getBasicProfile());
+  const onSignInSuccess = (name: string, accessToken: string) => {
+    setUser(name);
+    setAccessToken(accessToken);
     setIsSignedIn(getGapi().auth2.getAuthInstance().isSignedIn.get());
-    setAccessToken(getGapi().auth.getToken().access_token);
   }
 
-  const [loaded] = useGoogle();
+  const [] = useGoogle();
 
   return (
     <div className="App">
-      {!isSignedIn ? <>
-        <h1>Sign with google</h1>
-        {/* <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          {...{ discoveryDocs: DISCOVERY_DOCS } as any}
-          scope={SCOPES}
-          buttonText="Login with Google"
-          onSuccess={loadModulesAndInitGapi}
-          onFailure={onFailure}
-          cookiePolicy={'single_host_origin'}
-          isSignedIn={false}
-        /> */}
-        <button onClick={() => signIn()}>Login with Gapi</button>
-      </> : <>
+      {!isSignedIn ? <SignIn onSuccess={onSignInSuccess} /> : <>
           <h1>Hello, {user}</h1>
           <div className="buttons" >
             <button onClick={async () => console.log(await listFiles())}>List files</button>

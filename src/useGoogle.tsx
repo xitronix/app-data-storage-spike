@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import loadScript from "./load-script";
 import removeScript from './remove-script';
 
-function getGapi() {
+export function getGapi() {
   return gapi as any;
 }
 

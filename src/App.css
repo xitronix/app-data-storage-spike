@@ -37,18 +37,13 @@
   }
 }
 
-.buttons {
-
-}
-
 button {
-  border: none;
-  background: #404040;
-  color: #ffffff;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  color: #444444;
   font-weight: 100;
   padding: 10px;
   text-transform: uppercase;
-  border-radius: 6px;
   display: inline-block;
   transition: all 0.3s ease 0s;
   margin: 10px;
@@ -63,4 +58,5 @@ button:hover {
   -webkit-box-shadow: 0px 5px 5px -10px rgba(0,0,0,0.57);
   -moz-box-shadow: 0px 5px 5px -10px rgba(0,0,0,0.57);
   transition: all 0.3s ease 0s;
+  cursor: pointer;
 }
