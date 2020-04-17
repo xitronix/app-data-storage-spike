@@ -33,7 +33,7 @@ function App() {
   const [accessToken, setAccessToken] = useState('');
   const [user, setUser] = useState<string | undefined>(undefined);
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [id, setId] = useState<string | undefined>(undefined);
+  const [id, setId] = useState<string>('');
   const [instanceName, setInstanceName] = useState<string | undefined>(undefined);
   const [value, setValue] = useState('');
   const [privateKey, setPrivateKey] = useState('0x123...789');
@@ -65,7 +65,7 @@ function App() {
     }
   }
 
-  async function fileOperation(operation: 'delete' | 'get', fileId: string | undefined) {
+  async function fileOperation(operation: 'delete' | 'get', fileId: string) {
     if (!fileId) {
       return alert('Please enter file id');
     }
